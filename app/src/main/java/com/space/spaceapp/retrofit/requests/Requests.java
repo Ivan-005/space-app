@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 
 public interface Requests {
 
-    @GET("/")
+    @GET("feeds/all/")
     Call<Rss> getData();
 }
