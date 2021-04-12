@@ -2,6 +2,7 @@ package com.space.spaceapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -34,7 +35,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         getData();
+        initListener();
+    }
 
+    private void initListener() {
+        adapter.setOnItemClickListener(new NewsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                // KOGA STAVAS VO BUNDLE ILI SO KEYS VO EXTRA TOGAS KE ISGORISTIS GET NA LISTATA SO POSITION I KE GO DOBIES URL ZA WEBVIEW
+            }
+        });
     }
 
     private void getData() {
@@ -46,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 List<Item> items = response.body().getChannel().getItems();
                 context = getApplicationContext();
                 adapter = new NewsAdapter(context, items);
-                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context,2);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
                 binding.recyclerView.setLayoutManager(layoutManager);
                 binding.recyclerView.setAdapter(adapter);
 

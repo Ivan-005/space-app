@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/surface_color</item>
         <item name="colorOnPrimary">@color/background_color</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/toolbar_color</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
