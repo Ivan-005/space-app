@@ -19,17 +19,19 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Item> mList;
-    private OnItemClickListener mListener;
+    private RecyclerViewClickInterface recyclerViewClickInterface;
 
-    public NewsAdapter(Context mContext, List<Item> mList) {
+
+    public NewsAdapter(Context mContext, List<Item> mList, RecyclerViewClickInterface recyclerViewClickInterface) {
         this.mContext = mContext;
         this.mList = mList;
+        this.recyclerViewClickInterface = recyclerViewClickInterface;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(ItemPostNewsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false), mListener);
+        return new ViewHolder(ItemPostNewsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -49,33 +51,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         return mList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ItemPostNewsBinding binding;
 
-        public ViewHolder(@NonNull ItemPostNewsBinding binding, final OnItemClickListener listener) {
+        public ViewHolder(@NonNull ItemPostNewsBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
-                    }
+                    recyclerViewClickInterface.onItemClick(getAdapterPosition());
                 }
             });
         }
     }
 
-
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.mListener = listener;
-    }
 }

@@ -21,6 +21,7 @@
             app:layout_constraintTop_toTopOf="@+id/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/title"
+            android:layout_marginStart="3dp"
             android:src="@drawable/space_logo"
             />
 
@@ -34,7 +35,6 @@
             android:textStyle="bold"
             android:maxLines="2"
             android:ellipsize="end"
-            android:singleLine="false"
             />
 
         <TextView

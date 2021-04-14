@@ -6,15 +6,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.space.spaceapp.adapters.NewsAdapter;
+import com.space.spaceapp.adapters.RecyclerViewClickInterface;
 import com.space.spaceapp.databinding.ActivityMainBinding;
 import com.space.spaceapp.models.Item;
 import com.space.spaceapp.models.Rss;
 import com.space.spaceapp.retrofit.Service;
 import com.space.spaceapp.retrofit.requests.Requests;
+import com.space.spaceapp.utils.Common;
 
 import java.util.List;
 
@@ -22,11 +25,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewClickInterface {
 
+    List<Item> items;
     Context context;
     ActivityMainBinding binding;
     NewsAdapter adapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         getData();
-        initListener();
-    }
 
-    private void initListener() {
-        adapter.setOnItemClickListener(new NewsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                // KOGA STAVAS VO BUNDLE ILI SO KEYS VO EXTRA TOGAS KE ISGORISTIS GET NA LISTATA SO POSITION I KE GO DOBIES URL ZA WEBVIEW
-            }
-        });
     }
 
     private void getData() {
@@ -53,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
         service.getClient().create(Requests.class).getData().enqueue(new Callback<Rss>() {
             @Override
             public void onResponse(Call<Rss> call, Response<Rss> response) {
-                List<Item> items = response.body().getChannel().getItems();
+                items = response.body().getChannel().getItems();
                 context = getApplicationContext();
-                adapter = new NewsAdapter(context, items);
+                adapter = new NewsAdapter(context, items, MainActivity.this);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
                 binding.recyclerView.setLayoutManager(layoutManager);
                 binding.recyclerView.setAdapter(adapter);
@@ -64,9 +61,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Rss> call, Throwable t) {
-                Log.d("TAG", t.getMessage());
+                Log.d("ERROR", t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Common.URL_KEY, items.get(position).getLink());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
 
