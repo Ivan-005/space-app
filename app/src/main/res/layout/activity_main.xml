@@ -20,11 +20,20 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/toolbar_color"
             app:layout_scrollFlags="scroll|enterAlways"
-            />
+            >
+            
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/toolbar_img"
+                />
+            
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
